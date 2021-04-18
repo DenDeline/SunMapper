@@ -18,9 +18,5 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\..\src\SunMapper\SunMapper.csproj"/>
-    </ItemGroup>
-
     
 </Project>
