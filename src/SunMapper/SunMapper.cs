@@ -1,6 +1,6 @@
 ﻿namespace SunMapper
 {
-    public class SunMapper 
+    public class SunMapper
     {
         
     }
