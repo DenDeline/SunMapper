@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SunMapper.SourceGenerator": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
