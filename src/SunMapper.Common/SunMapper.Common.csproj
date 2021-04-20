@@ -1,8 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-	<LangVersion>preview</LangVersion>
-	<Nullable>enable</Nullable>
-  </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageId>DenDeline.SunMapper.Common</PackageId>
+        <Title>DenDeline.SunMapper.Common</Title>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Rostislav Statko (@_dendeline_)</Authors>
+        <PackageProjectUrl>https://github.com/DenDeline/SunMapper</PackageProjectUrl>
+        <Description>Lightweight mapper based on sourcecode gen</Description>
+        <RepositoryUrl>https://github.com/DenDeline/SunMapper</RepositoryUrl>
+        <PackageTags>mapper</PackageTags>
+        <Version>0.1.0</Version>
+        <PackageReleaseNotes>Testing GitHub action publishing</PackageReleaseNotes>
+        <AssemblyName>DenDeline.SunMapper.Common</AssemblyName>
+        <PackageIconUrl></PackageIconUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    
 </Project>
