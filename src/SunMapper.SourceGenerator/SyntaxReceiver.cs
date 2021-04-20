@@ -1,15 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Linq;
-using System;
-using System.Text;
 
 namespace SunMapper.SourceGenerator
 {
     internal class SyntaxReceiver : ISyntaxReceiver
     {
-        public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
+        public List<ClassInfo> CandidateClasses { get; } = new();
 
         public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
@@ -19,9 +16,19 @@ namespace SunMapper.SourceGenerator
                 {
                     Count: > 0
                 }
-            } classDeclaration)  
+            } classDeclaration)
             {
-                CandidateClasses.Add(classDeclaration);
+                List<AttributeSyntax> attributes = new();
+                
+                foreach (var attributeList in classDeclaration.AttributeLists)
+                {
+                    foreach (var attribute in attributeList.Attributes)
+                    {
+                        attributes.Add(attribute);
+                    }
+                }
+                
+                CandidateClasses.Add(new ClassInfo(classDeclaration, attributes));
             }
         }
     }
