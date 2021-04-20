@@ -1,5 +1,6 @@
-using SunMapper.Attributes;
-using SunMapperExtensions;
+
+using SunMapper.Common.Attributes;
+using SunMapper.Generated.Extensions;
 using Xunit;
 
 namespace SunMapper.UnitTests

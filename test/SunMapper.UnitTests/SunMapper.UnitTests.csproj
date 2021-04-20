@@ -19,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-		<ProjectReference Include="..\..\src\SunMapper\SunMapper.csproj" />
-		<ProjectReference Include="..\..\src\SunMapper.SourceGenerator\SunMapper.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\src\SunMapper.Common\SunMapper.Common.csproj" />
+		<ProjectReference Include="..\..\src\SunMapper\SunMapper.csproj"  OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
     

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SunMapper.Attributes
+namespace SunMapper.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public sealed class MapToAttribute : Attribute

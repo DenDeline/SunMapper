@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace SunMapper.SourceGenerator
+namespace SunMapper
 {
     public class MapperInfo
     {

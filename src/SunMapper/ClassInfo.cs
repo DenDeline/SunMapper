@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace SunMapper.SourceGenerator
+namespace SunMapper
 {
     public class ClassInfo
     {
