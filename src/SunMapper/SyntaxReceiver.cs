@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace SunMapper.SourceGenerator
+namespace SunMapper
 {
     internal class SyntaxReceiver : ISyntaxReceiver
     {
