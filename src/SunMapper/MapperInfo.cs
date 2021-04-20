@@ -4,10 +4,10 @@ namespace SunMapper
 {
     public class MapperInfo
     {
-        public ITypeSymbol Destination { get; set; }
-        public ITypeSymbol Source { get; set; }
+        public INamedTypeSymbol Destination { get; set; }
+        public INamedTypeSymbol Source { get; set; }
 
-        public MapperInfo(ITypeSymbol source, ITypeSymbol destination)
+        public MapperInfo(INamedTypeSymbol source, INamedTypeSymbol destination)
         {
             Source = source;
             Destination = destination;
