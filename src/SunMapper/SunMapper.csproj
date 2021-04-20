@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>DenDeline.SunMapper</PackageId>
-    <Title>DenDeline.SunMapper</Title>
+    <PackageId>SunMapper</PackageId>
+    <Title>SunMapper</Title>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Rostislav Statko (@_dendeline_)</Authors>
     <PackageProjectUrl>https://github.com/DenDeline/SunMapper</PackageProjectUrl>
@@ -12,7 +12,7 @@
     <PackageTags>mapper</PackageTags>
     <Version>0.1.0</Version>
     <PackageReleaseNotes>Testing GitHub action publishing</PackageReleaseNotes>
-    <AssemblyName>DenDeline.SunMapper</AssemblyName>
+    <AssemblyName>SunMapper</AssemblyName>
     <PackageIconUrl></PackageIconUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <LangVersion>preview</LangVersion>

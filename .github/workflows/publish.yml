@@ -22,13 +22,13 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Publish DenDeline.SunMapper to NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.0
+      uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        PROJECT_FILE_PATH: src/DenDeline.SunMapper/DenDeline.SunMapper.csproj
+        PROJECT_FILE_PATH: src/SunMapper/SunMapper.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
     - name: Publish DenDeline.SunMapper.Common to NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.0
+      uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        PROJECT_FILE_PATH: src/DenDeline.SunMapper.Common/DenDeline.SunMapper.Common.csproj
+        PROJECT_FILE_PATH: src/SunMapper.Common/SunMapper.Common.csproj
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
