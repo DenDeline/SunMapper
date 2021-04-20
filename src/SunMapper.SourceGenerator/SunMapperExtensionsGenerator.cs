@@ -37,9 +37,7 @@ namespace SunMapperExtensions
                 return;
             }
             
-            var classDeclarations = syntaxReceiver.CandidateClasses;
-
-            var classesToMap = GetMapClassesInfo(context.Compilation, classDeclarations);
+            var classesToMap = GetMapClassesInfo(context.Compilation, syntaxReceiver.CandidateClasses).ToArray();
 
             if (classesToMap.Any())
             {
@@ -98,68 +96,62 @@ namespace SunMapperExtensions
         
         private static IEnumerable<MapperInfo> GetMapClassesInfo(
             Compilation compilation, 
-            IEnumerable<ClassDeclarationSyntax> classDeclarations)
+            IEnumerable<ClassInfo> candidateClassesInfo)
         {
-            foreach (var classDeclaration in classDeclarations)
+            INamedTypeSymbol? searchingAttributeType = compilation.GetTypeByMetadataName($"{MapperAttributesNamespace}.MapToAttribute");
+
+            if (searchingAttributeType is null)
             {
-                SemanticModel model = compilation.GetSemanticModel(classDeclaration.SyntaxTree);
+                throw new NullReferenceException("MapToAttribute hasn't declared.");
+            }
+            
+            foreach (var candidateClassInfo in candidateClassesInfo)
+            {
+                ClassDeclarationSyntax candidateClass = candidateClassInfo.ClassDeclaration;
+                SemanticModel model = compilation.GetSemanticModel(candidateClass.SyntaxTree);
                 
-                ITypeSymbol? sourceClassType = model.GetDeclaredSymbol(classDeclaration);
-                INamedTypeSymbol? attributeSymbol = compilation.GetTypeByMetadataName($"{MapperAttributesNamespace}.MapToAttribute");
+                IEnumerable<AttributeSyntax> candidateClassAttributes = candidateClassInfo.Attributes;
                 
-                if (sourceClassType is null ||
-                    attributeSymbol is null)
+                var searchedAttributes =  candidateClassAttributes
+                    .Where(_ => model.GetTypeInfo(_).Type?.Equals(searchingAttributeType, SymbolEqualityComparer.Default) ?? false)
+                    .ToArray();
+
+                if (!searchedAttributes.Any())
                 {
                     continue;
                 }
-
-                var classAttrubuteSymbols = sourceClassType.GetAttributes();
-
-                if (!classAttrubuteSymbols.Any(_ => _.AttributeClass!.Equals(attributeSymbol, SymbolEqualityComparer.Default)))
+                
+                ITypeSymbol? sourceClassType = model.GetDeclaredSymbol(candidateClass);
+                
+                if (sourceClassType is null)
                 {
-                    continue;
-                };
-
-                var attributeDeclarations = GetAttributesByName(classDeclaration, "MapTo");
-
-                foreach (var attributeDeclaration in attributeDeclarations)
+                    throw new NullReferenceException("MapToAttribute hasn't declared.");
+                }
+                
+                foreach (var searchedAttribute in searchedAttributes)
                 {
-                    var typeOfExpression = attributeDeclaration.ArgumentList?.Arguments.First().Expression as TypeOfExpressionSyntax;
-
+                    TypeOfExpressionSyntax? typeOfExpression = searchedAttribute
+                        .ArgumentList?.Arguments.First().Expression as TypeOfExpressionSyntax;
                     if (typeOfExpression is null)
                     {
                         continue;
                     }
-                    var destinationResouraseType = typeOfExpression.Type;
+                    
+                    TypeSyntax? destinationResouraseType = typeOfExpression.Type;
 
                     if(destinationResouraseType is null){
                         throw new NullReferenceException();
                     }
 
-                    ITypeSymbol? destination = model.GetTypeInfo(destinationResouraseType).Type;
-
-                    if (destination is null)
+                    ITypeSymbol? destinationClassType = model.GetTypeInfo(destinationResouraseType).Type;
+                    if (destinationClassType is null)
                     {
                         throw new NullReferenceException();
                     }
 
-                    yield return new MapperInfo(sourceClassType, destination);
+                    yield return new MapperInfo(sourceClassType, destinationClassType);
                 }
                     
-            }
-            
-            static IEnumerable<AttributeSyntax> GetAttributesByName(ClassDeclarationSyntax classDeclaration, string attributeName)
-            {
-                foreach (var attributeList in classDeclaration.AttributeLists)
-                {
-                    foreach (var attribute in attributeList.Attributes)
-                    {
-                        if (attribute.Name.ToString() == attributeName)
-                        {
-                            yield return attribute;
-                        }
-                    }
-                }
             }
         }
     }
