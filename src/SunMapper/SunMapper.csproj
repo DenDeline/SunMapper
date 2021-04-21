@@ -2,31 +2,39 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    
+  </PropertyGroup>
+  
+  <PropertyGroup>
     <PackageId>SunMapper</PackageId>
     <Title>SunMapper</Title>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Rostislav Statko (@_dendeline_)</Authors>
     <PackageProjectUrl>https://github.com/DenDeline/SunMapper</PackageProjectUrl>
     <Description>Lightweight mapper based on sourcecode gen</Description>
     <RepositoryUrl>https://github.com/DenDeline/SunMapper</RepositoryUrl>
     <PackageTags>mapper</PackageTags>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <PackageReleaseNotes>Testing GitHub action publishing</PackageReleaseNotes>
     <AssemblyName>SunMapper</AssemblyName>
     <PackageIconUrl></PackageIconUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-<!--	  <EnableNETAnalyzers>true</EnableNETAnalyzers>-->
-<!--	  <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>-->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" PrivateAssets="all" />
   </ItemGroup>
-    
+
+  <ItemGroup>
+    <ProjectReference Include="..\SunMapper.Common\SunMapper.Common.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
+  
 </Project>

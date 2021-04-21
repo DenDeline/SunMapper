@@ -36,7 +36,7 @@ namespace SunMapper.UnitTests
             {
                 Name = "User1"
             };
-
+            
             Assert.True(user.TryMapTo(out UserGetDto destination));
             Assert.Equal("User1", destination.Name);
         }
