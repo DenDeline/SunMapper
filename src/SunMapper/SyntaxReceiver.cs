@@ -6,7 +6,7 @@ namespace SunMapper
 {
     internal class SyntaxReceiver : ISyntaxReceiver
     {
-        public List<ClassInfo> CandidateClasses { get; } = new();
+        public List<ClassSourceTreeInfo> CandidateClasses { get; } = new();
 
         public void OnVisitSyntaxNode(SyntaxNode syntaxNode)
         {
@@ -28,7 +28,7 @@ namespace SunMapper
                     }
                 }
                 
-                CandidateClasses.Add(new ClassInfo(classDeclaration, attributes));
+                CandidateClasses.Add(new ClassSourceTreeInfo(classDeclaration, attributes));
             }
         }
     }

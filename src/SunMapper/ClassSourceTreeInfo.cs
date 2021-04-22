@@ -3,18 +3,22 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SunMapper
 {
-    public class ClassInfo
+    /// <summary>
+    ///  Information about source tree of particular class 
+    /// </summary>
+    public class ClassSourceTreeInfo
     {
-        public ClassDeclarationSyntax ClassDeclaration { get; }
+        public ClassDeclarationSyntax Declaration { get; }
+        
         public IEnumerable<AttributeSyntax> Attributes { get; }
         
-        public ClassInfo(
+        public ClassSourceTreeInfo(
             ClassDeclarationSyntax classDeclaration,
             IEnumerable<AttributeSyntax> attributesDeclaration
         )
         {
             Attributes = attributesDeclaration;
-            ClassDeclaration = classDeclaration;
+            Declaration = classDeclaration;
         }
     }
 }
