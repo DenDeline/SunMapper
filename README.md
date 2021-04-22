@@ -38,7 +38,7 @@ public class User {
     public string PasswordHash { get; set; }
 }
 
-public clas UserGetDto {
+public class UserGetDto {
     public string Name { get; set; }
 }
 ```
