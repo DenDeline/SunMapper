@@ -1,18 +1,25 @@
-using SunMapper.Generated.Extensions;
+using SunMapper.Common;
+using SunMapper.Common.Attributes;
+using SunMapper.Generated;
 using Xunit;
 
 namespace SunMapper.UnitTests
 {
-
-    [SunMapper.Common.Attributes.MapTo(typeof(UserGetDto))]
+    
+    [MapTo(typeof(UserGetDto)), MapTo(typeof(UserUpdateDto))]
     public class User
     {
         public string Name { get; set; }
         public int Age { get; set; }
     }
 
-    [SunMapper.Common.Attributes.MapTo(typeof(User))]
+    [MapTo(typeof(User))]
     public class UserGetDto
+    {
+        public string Name { get; set; }
+    }
+
+    public class UserUpdateDto
     {
         public string Name { get; set; }
     }
@@ -21,7 +28,7 @@ namespace SunMapper.UnitTests
     {
         [Fact]
         public void Test1()
-        {
+        {   
             var user = new User();
 
             Assert.True(user.TryMapTo(out UserGetDto destination));
