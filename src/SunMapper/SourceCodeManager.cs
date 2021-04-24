@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SunMapper
@@ -15,9 +15,9 @@ namespace SunMapper
             _syntaxReceiver = syntaxReceiver;
         }
 
-        public IEnumerable<MappingClassesInfo> GetMappingClassesByMapToAttribute(Compilation compilation)
+        public Dictionary<INamedTypeSymbol, HashSet<INamedTypeSymbol>> GetMappingClassesByMapToAttribute(Compilation compilation)
         {
-            List<MappingClassesInfo> mappingClasses = new();
+            var mappingClasses = new Dictionary<INamedTypeSymbol, HashSet<INamedTypeSymbol>>(SymbolEqualityComparer.Default);
             INamedTypeSymbol searchingAttributeType = compilation.GetTypeByMetadataName($"SunMapper.Common.Attributes.MapToAttribute")!;
             IEnumerable<ClassSourceTreeInfo> candidateClassesInfo = _syntaxReceiver.CandidateClasses;
             
@@ -26,9 +26,7 @@ namespace SunMapper
                 ClassDeclarationSyntax candidateClass = candidateClassInfo.Declaration;
                 SemanticModel model = compilation.GetSemanticModel(candidateClass.SyntaxTree);
                 
-                IEnumerable<AttributeSyntax> candidateClassAttributes = candidateClassInfo.Attributes;
-                
-                var searchedAttributes =  candidateClassAttributes
+                var searchedAttributes =  candidateClassInfo.Attributes
                     .Where(_ => model.GetTypeInfo(_).Type!.Equals(searchingAttributeType, SymbolEqualityComparer.Default))
                     .ToArray();
 
@@ -36,26 +34,39 @@ namespace SunMapper
                 {
                     continue;
                 }
-                
-                if (model.GetDeclaredSymbol(candidateClass) is not INamedTypeSymbol sourceClassType)
+
+                if (model.GetDeclaredSymbol(candidateClass) is not
+                {
+                    DeclaredAccessibility: Accessibility.Public
+                } sourceClassType)
                 {
                     continue;
                 }
+
+                var destinationClasses = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
                 
                 foreach (var searchedAttribute in searchedAttributes)
                 {
                     TypeOfExpressionSyntax typeOfExpression = (TypeOfExpressionSyntax) searchedAttribute.ArgumentList!.Arguments.First().Expression;
-                    TypeSyntax destinationResourceType = typeOfExpression.Type;
                     
-                    if (model.GetTypeInfo(destinationResourceType).Type is not INamedTypeSymbol destinationClassType)
+                    if (model.GetTypeInfo(typeOfExpression.Type).Type is INamedTypeSymbol
                     {
-                        continue;
-                    }
-
-                    mappingClasses.Add(new MappingClassesInfo(sourceClassType, destinationClassType));
+                        DeclaredAccessibility: Accessibility.Public
+                    } destinationClassType)
+                    {
+                        destinationClasses.Add(destinationClassType);
+                    };
                 }
-            }
 
+                if (destinationClasses.Count == 0)
+                {
+                    continue;
+                }
+                
+                mappingClasses.Add(sourceClassType, destinationClasses);
+            }
+           
+            
             return mappingClasses;
         }
     }
