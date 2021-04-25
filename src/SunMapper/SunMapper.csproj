@@ -17,7 +17,7 @@
     <Description>Lightweight mapper based on sourcecode gen</Description>
     <RepositoryUrl>https://github.com/DenDeline/SunMapper</RepositoryUrl>
     <PackageTags>mapper</PackageTags>
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
     <PackageReleaseNotes>Fix bugs and code clean up</PackageReleaseNotes>
     <AssemblyName>SunMapper</AssemblyName>
     <PackageIconUrl></PackageIconUrl>
