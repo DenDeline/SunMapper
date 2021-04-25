@@ -1,4 +1,3 @@
-using SunMapper.Common;
 using SunMapper.Common.Attributes;
 using SunMapper.Generated;
 using Xunit;
@@ -6,14 +5,20 @@ using Xunit;
 namespace SunMapper.UnitTests
 {
     
-    [MapTo(typeof(UserGetDto)), MapTo(typeof(UserUpdateDto))]
-    public class User
+    [MapTo(typeof(UserGetDto))]
+    public partial class User
     {
         public string Name { get; set; }
         public int Age { get; set; }
     }
 
-    [MapTo(typeof(User))]
+    [MapTo(typeof(UserUpdateDto))]
+    public partial class User
+    {
+        
+    }
+    
+    
     public class UserGetDto
     {
         public string Name { get; set; }
