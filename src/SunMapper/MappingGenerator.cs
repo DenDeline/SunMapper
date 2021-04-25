@@ -29,13 +29,13 @@ namespace SunMapper.Generated
             {
                 return;
             }
-
+            
             SourceCodeManager codeManager = new(syntaxReceiver);
             var mappingClasses = codeManager.GetMappingClassesByMapToAttribute(context.Compilation);
             GenerateMapperExtensions(context, mappingClasses);
         }
         
-        private void GenerateMapperExtensions(GeneratorExecutionContext context, Dictionary<INamedTypeSymbol, HashSet<INamedTypeSymbol>> classesToMap)
+        private void GenerateMapperExtensions(GeneratorExecutionContext context, IDictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> classesToMap)
         {
             if (classesToMap.Count == 0)
             {

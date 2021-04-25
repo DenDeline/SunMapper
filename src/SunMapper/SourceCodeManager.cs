@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SunMapper.Extensions;
 
 namespace SunMapper
 {
@@ -14,27 +15,20 @@ namespace SunMapper
         {
             _syntaxReceiver = syntaxReceiver;
         }
-
-        public Dictionary<INamedTypeSymbol, HashSet<INamedTypeSymbol>> GetMappingClassesByMapToAttribute(Compilation compilation)
+        
+        public Dictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> GetMappingClassesByMapToAttribute(Compilation compilation)
         {
-            var mappingClasses = new Dictionary<INamedTypeSymbol, HashSet<INamedTypeSymbol>>(SymbolEqualityComparer.Default);
-            INamedTypeSymbol searchingAttributeType = compilation.GetTypeByMetadataName($"SunMapper.Common.Attributes.MapToAttribute")!;
-            IEnumerable<ClassSourceTreeInfo> candidateClassesInfo = _syntaxReceiver.CandidateClasses;
-            
-            foreach (var candidateClassInfo in candidateClassesInfo)
-            {
-                ClassDeclarationSyntax candidateClass = candidateClassInfo.Declaration;
-                SemanticModel model = compilation.GetSemanticModel(candidateClass.SyntaxTree);
-                
-                var searchedAttributes =  candidateClassInfo.Attributes
-                    .Where(_ => model.GetTypeInfo(_).Type!.Equals(searchingAttributeType, SymbolEqualityComparer.Default))
-                    .ToArray();
-
-                if (!searchedAttributes.Any())
+            var mappingClasses = new Dictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>>(SymbolEqualityComparer.Default);
+            foreach (var candidateClass in _syntaxReceiver.CandidateClasses)
+            {   
+                var mapToAttributes =  candidateClass.GetMapToAttributes(compilation);
+                if (mapToAttributes.Length == 0)
                 {
                     continue;
                 }
 
+                var model = compilation.GetSemanticModel(candidateClass.SyntaxTree);
+                
                 if (model.GetDeclaredSymbol(candidateClass) is not
                 {
                     DeclaredAccessibility: Accessibility.Public
@@ -43,13 +37,23 @@ namespace SunMapper
                     continue;
                 }
 
-                var destinationClasses = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+                var isSourceClassContaining = mappingClasses.ContainsKey(sourceClassType);
                 
-                foreach (var searchedAttribute in searchedAttributes)
+#nullable disable
+                ISet<INamedTypeSymbol> destinationClasses = null;
+#nullable enable
+                if (isSourceClassContaining)
                 {
-                    TypeOfExpressionSyntax typeOfExpression = (TypeOfExpressionSyntax) searchedAttribute.ArgumentList!.Arguments.First().Expression;
-                    
-                    if (model.GetTypeInfo(typeOfExpression.Type).Type is INamedTypeSymbol
+                    destinationClasses = mappingClasses[sourceClassType];
+                }
+                else
+                {
+                    destinationClasses = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+                }
+
+                foreach (var searchedAttribute in mapToAttributes.Select(_ => _.GetDestinationTypeSyntax()))
+                {
+                    if (model.GetTypeInfo(searchedAttribute).Type is INamedTypeSymbol
                     {
                         DeclaredAccessibility: Accessibility.Public
                     } destinationClassType)
@@ -58,15 +62,11 @@ namespace SunMapper
                     };
                 }
 
-                if (destinationClasses.Count == 0)
+                if (!isSourceClassContaining)
                 {
-                    continue;
+                    mappingClasses.Add(sourceClassType, destinationClasses);
                 }
-                
-                mappingClasses.Add(sourceClassType, destinationClasses);
             }
-           
-            
             return mappingClasses;
         }
     }
