@@ -29,9 +29,9 @@ namespace SunMapper.Generated
             {
                 return;
             }
-            
-            SourceCodeManager codeManager = new(syntaxReceiver);
-            var mappingClasses = codeManager.GetMappingClassesByMapToAttribute(context.Compilation);
+
+            FluentApiManager fluentApiManager = new(syntaxReceiver);
+            var mappingClasses = fluentApiManager.GetMappingClasses(context.Compilation);
             GenerateMapperExtensions(context, mappingClasses);
         }
         
@@ -60,7 +60,7 @@ namespace SunMapper.Generated
                 foreach (var destination in destinations)
                 {
 
-                    sb.Append(@$"
+                    sb.Append(@$"   
 
         public static bool TryMapTo(this {source} source, out {destination} destination)
         {{

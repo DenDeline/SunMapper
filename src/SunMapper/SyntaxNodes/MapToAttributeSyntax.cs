@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace SunMapper
+namespace SunMapper.SyntaxNodes
 {
     public class MapToAttributeSyntax
     {

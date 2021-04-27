@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -7,18 +6,21 @@ using SunMapper.Extensions;
 
 namespace SunMapper
 {
-    public class SourceCodeManager
+    public class FluentApiManager
     {
         private readonly SyntaxReceiver _syntaxReceiver;
 
-        public SourceCodeManager(SyntaxReceiver syntaxReceiver)
+        public FluentApiManager(SyntaxReceiver syntaxReceiver)
         {
             _syntaxReceiver = syntaxReceiver;
         }
         
-        public Dictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> GetMappingClassesByMapToAttribute(Compilation compilation)
+        public IDictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> GetMappingClasses(Compilation compilation)
         {
+// https://github.com/dotnet/roslyn-analyzers/issues/4568            
+#pragma warning disable RS1024
             var mappingClasses = new Dictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>>(SymbolEqualityComparer.Default);
+#pragma warning restore
             foreach (var candidateClass in _syntaxReceiver.CandidateClasses)
             {   
                 var mapToAttributes =  candidateClass.GetMapToAttributes(compilation);
@@ -39,18 +41,13 @@ namespace SunMapper
 
                 var isSourceClassContaining = mappingClasses.ContainsKey(sourceClassType);
                 
-#nullable disable
-                ISet<INamedTypeSymbol> destinationClasses = null;
-#nullable enable
-                if (isSourceClassContaining)
-                {
-                    destinationClasses = mappingClasses[sourceClassType];
-                }
-                else
-                {
-                    destinationClasses = new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
-                }
-
+// https://github.com/dotnet/roslyn-analyzers/issues/4568            
+#pragma warning disable RS1024
+                ISet<INamedTypeSymbol> destinationClasses = isSourceClassContaining ? 
+                    mappingClasses[sourceClassType] : 
+                    new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
+#pragma warning restore
+                
                 foreach (var searchedAttribute in mapToAttributes.Select(_ => _.GetDestinationTypeSyntax()))
                 {
                     if (model.GetTypeInfo(searchedAttribute).Type is INamedTypeSymbol
@@ -59,7 +56,7 @@ namespace SunMapper
                     } destinationClassType)
                     {
                         destinationClasses.Add(destinationClassType);
-                    };
+                    }
                 }
 
                 if (!isSourceClassContaining)

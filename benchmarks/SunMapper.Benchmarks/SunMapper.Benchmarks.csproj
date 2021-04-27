@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>portable</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Optimize>true</Optimize>
+        <Configuration>Release</Configuration>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.17.0" />
+        <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+        <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.12.1" />
+        <PackageReference Include="Mapster" Version="7.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\SunMapper\SunMapper.csproj" OutputItemType="Analyzer" />
+    </ItemGroup>
+</Project>
