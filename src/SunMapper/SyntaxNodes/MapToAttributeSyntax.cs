@@ -2,7 +2,7 @@
 
 namespace SunMapper.SyntaxNodes
 {
-    public class MapToAttributeSyntax
+    internal class MapToAttributeSyntax
     {
         public AttributeSyntax Raw { get; }
 

@@ -10,7 +10,7 @@ using SunMapper.SyntaxNodes;
 
 namespace SunMapper.Extensions
 {
-    public static class ClassDeclarationSyntaxExtensions
+    internal static class ClassDeclarationSyntaxExtensions
     {
         private static readonly Regex CheckAttribute = new(@"Attribute$", RegexOptions.Compiled);
 

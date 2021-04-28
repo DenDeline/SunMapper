@@ -6,7 +6,7 @@ using SunMapper.Extensions;
 
 namespace SunMapper
 {
-    public class FluentApiManager
+    internal class FluentApiManager
     {
         private readonly SyntaxReceiver _syntaxReceiver;
 

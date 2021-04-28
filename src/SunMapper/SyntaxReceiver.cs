@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SunMapper
 {
-    public class SyntaxReceiver : ISyntaxReceiver
+    internal class SyntaxReceiver : ISyntaxReceiver
     {
         public List<ClassDeclarationSyntax> CandidateClasses { get; } = new();
 
