@@ -2,7 +2,7 @@
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using SunMapper.Common.Attributes;
+using SunMapper.Core.Attributes;
 using Xunit;
 
 namespace SunMapper.UnitTests
@@ -48,7 +48,7 @@ namespace TestNamespace {
             //arrange
             
             Compilation inputCompilation = CreateCompilation(@$"
-using SunMapper.Common.Attributes;
+using SunMapper.Core.Attributes;
 
 namespace TestNamespace {{
     [MapTo(typeof({sourceClassName}Dto))]

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SunMapper.Common.Attributes
+namespace SunMapper.Core.Attributes
 {
     /// <summary>
     /// Allow SunMapper to find classes from you are mapping 

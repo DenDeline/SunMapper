@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SunMapper.Core.Attributes;
 using SunMapper.SyntaxNodes;
 
 namespace SunMapper.Extensions
@@ -65,7 +66,7 @@ namespace SunMapper.Extensions
 
         public static ImmutableArray<MapToAttributeSyntax> GetMapToAttributes(this ClassDeclarationSyntax declaration, Compilation compilation)
         {
-            ITypeSymbol searchingAttributeType = compilation.GetTypeByMetadataName("SunMapper.Common.Attributes.MapToAttribute")!;
+            ITypeSymbol searchingAttributeType = compilation.GetTypeByMetadataName(typeof(MapToAttribute).FullName)!;
 
             var attributes = declaration.GetAttributesByType(searchingAttributeType, compilation).Select(_ => new MapToAttributeSyntax(_)).ToImmutableArray();
             return attributes;
