@@ -29,7 +29,7 @@ You can find other ways for installing [here](https://www.nuget.org/packages/Sun
 
 Add `MapTo` attribute to a model you want to get data from:
 ```c#
-using SunMapper.Common.Attributes;
+using SunMapper.Core.FluentApi;
 
 [MapTo(typeof(UserGetDto))]
 public class User {
