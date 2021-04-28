@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using SunMapper.Extensions;
@@ -15,12 +14,15 @@ namespace SunMapper
             _syntaxReceiver = syntaxReceiver;
         }
         
-        public IDictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> GetMappingClasses(Compilation compilation)
+        public IDictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>> GetMappingClasses(GeneratorExecutionContext context)
         {
+            Compilation compilation = context.Compilation;
 // https://github.com/dotnet/roslyn-analyzers/issues/4568            
 #pragma warning disable RS1024
             var mappingClasses = new Dictionary<INamedTypeSymbol, ISet<INamedTypeSymbol>>(SymbolEqualityComparer.Default);
 #pragma warning restore
+
+            
             foreach (var candidateClass in _syntaxReceiver.CandidateClasses)
             {   
                 var mapToAttributes =  candidateClass.GetMapToAttributes(compilation);
@@ -48,9 +50,10 @@ namespace SunMapper
                     new HashSet<INamedTypeSymbol>(SymbolEqualityComparer.Default);
 #pragma warning restore
                 
-                foreach (var searchedAttribute in mapToAttributes.Select(_ => _.GetDestinationTypeSyntax()))
+                foreach (var searchedAttribute in mapToAttributes)
                 {
-                    if (model.GetTypeInfo(searchedAttribute).Type is INamedTypeSymbol
+                    var destinationType = searchedAttribute.GetDestinationTypeSyntax();
+                    if (model.GetTypeInfo(destinationType).Type is INamedTypeSymbol
                     {
                         DeclaredAccessibility: Accessibility.Public
                     } destinationClassType)

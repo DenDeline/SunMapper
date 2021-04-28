@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SunMapper.Core.Attributes;
+using SunMapper.Core.FluentApi;
 using SunMapper.SyntaxNodes;
 
 namespace SunMapper.Extensions

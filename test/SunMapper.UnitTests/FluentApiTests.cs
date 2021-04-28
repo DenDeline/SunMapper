@@ -2,17 +2,16 @@
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using SunMapper.Core.Attributes;
 using Xunit;
 
 namespace SunMapper.UnitTests
 {
-    public class MapToAttributeTests
+    public class FluentApiTests
     {
         private static Compilation CreateCompilation(string source)
             => CSharpCompilation.Create("compilation",
                 new []{ CSharpSyntaxTree.ParseText(source) },
-                new []{ MetadataReference.CreateFromFile(typeof(MapToAttribute).GetTypeInfo().Assembly.Location) },
+                new []{ MetadataReference.CreateFromFile(typeof(MappingGenerator).GetTypeInfo().Assembly.Location) },
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         
         [Fact]
@@ -48,7 +47,7 @@ namespace TestNamespace {
             //arrange
             
             Compilation inputCompilation = CreateCompilation(@$"
-using SunMapper.Core.Attributes;
+using SunMapper.Core.FluentApi;
 
 namespace TestNamespace {{
     [MapTo(typeof({sourceClassName}Dto))]

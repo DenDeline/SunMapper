@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SunMapper.Core.Attributes;
+using SunMapper.Core.FluentApi;
 
 namespace SunMapper.Benchmarks
 {

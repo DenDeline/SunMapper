@@ -28,10 +28,10 @@ namespace SunMapper.Generated
             if (context.SyntaxReceiver is not SyntaxReceiver syntaxReceiver)
             {
                 return;
-            }
+            }  
 
             FluentApiManager fluentApiManager = new(syntaxReceiver);
-            var mappingClasses = fluentApiManager.GetMappingClasses(context.Compilation);
+            var mappingClasses = fluentApiManager.GetMappingClasses(context);
             GenerateMapperExtensions(context, mappingClasses);
         }
         

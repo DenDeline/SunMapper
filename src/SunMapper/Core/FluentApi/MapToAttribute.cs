@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SunMapper.Core.Attributes
+namespace SunMapper.Core.FluentApi
 {
     /// <summary>
     /// Allow SunMapper to find classes from you are mapping 
